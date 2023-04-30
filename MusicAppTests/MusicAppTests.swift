@@ -7,16 +7,59 @@
 
 import XCTest
 @testable import MusicApp
+import AVFoundation
+import AVFAudio
 
 final class MusicAppTests: XCTestCase {
+    var mockApi: API?
+    var apiHandler: APIHandler?
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    
+    func testApiUrl(){
+        let actualURL =  URL(string:"https://itunes.apple.com/search?term=metallica")
+        let testedURL = API.searchURL(for: "metallica")
+        XCTAssertEqual(actualURL, testedURL)
+        
+        let actualURL2 =  URL(string:"https://itunes.apple.com/search?term=metallica")
+        let testedURL2 = API.searchURL(for: "metallicas")
+        XCTAssertNotEqual(actualURL2, testedURL2)
+       
+        let actualURL3 =  URL(string:"https://itunes.apple.com/search?term=JustinBieber")
+        let testedURL3 = API.searchURL(for: "Justin Bieber")
+        XCTAssertNotEqual(actualURL3, testedURL3)
+    }
+    func testFetchApi(){
+        let url = API.searchURL(for: "Justin Bieber")
+        APIHandler.shared.fetchAPI(url: url!){ result in
+            switch result {
+            case .failure (let error):
+                XCTAssertNotNil(error)
+            case .success(let data):
+                XCTAssertNotNil(data)
+            }
+        }
+        
+        let url2 = API.searchURL(for: "Nirvana")
+        APIHandler.shared.fetchAPI(url: url!){ result in
+            switch result {
+            case .failure (let error):
+                XCTAssertNotNil(error)
+            case .success(let data):
+                XCTAssertNotNil(data)
+            }
+        }
+    }
+    
+  
+    
 
     func testExample() throws {
         // This is an example of a functional test case.
