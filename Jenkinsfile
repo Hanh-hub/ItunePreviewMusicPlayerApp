@@ -9,15 +9,13 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'xcodebuild -workspace "/Users/hanhvo/Documents/Swift Practice New/InterviewPrep Demos/MusicApp/musicApp.xcworkspace" -scheme musicApp -configuration Release -sdk iphoneos archive -archivePath ./build/musicApp.xcarchive'
-
+                sh 'xcodebuild -workspace musicApp.xcworkspace -scheme musicApp -configuration Release -sdk iphoneos build'
             }
         }
         stage('Archive') {
             steps {
-                sh 'xcodebuild -workspace MusicApp.xcworkspace -scheme MusicApp -configuration Release -sdk iphoneos archive -archivePath ./build/MusicApp.xcarchive'
+                sh 'xcodebuild -workspace musicApp.xcworkspace -scheme musicApp -configuration Release -sdk iphoneos archive -archivePath ./build/musicApp.xcarchive'
             }
         }
     }
 }
-
